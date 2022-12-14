@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 
 import {login} from '../services/auth';
-import {getData} from '../services/userService';
+import {getData} from '../services/data';
 import instance from '../services/axios';
 import { useNavigate } from 'react-router-dom';
 
