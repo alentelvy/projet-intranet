@@ -13,3 +13,8 @@ export const formatDate = (birthdate) => {
     const birthDate = new Date(birthdate)
     return birthDate.toLocaleDateString('fr', { day: "numeric", month:"long"})
 }
+
+export const getRandomInt = (max) => {
+    return Math.floor(Math.random() * max);
+}
+  
