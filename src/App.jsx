@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import Users from './views/Users'
 import Login from './views/Login';
+import Profile from './views/Profile';
 import './App.css'
-import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import Home from './views/Home';
 
 
@@ -22,8 +23,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/users" element={<Users/>} />
-        {/* <Route path="/details/:id" element={<Details/>} />
-        <Route path="/edit/:id" element={<Modify/>} /> */}
+        <Route path="/profile" element={<Profile/>} />
         <Route path="/login" element={<Login/>} />
       </Routes>
   </div>

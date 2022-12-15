@@ -9,7 +9,10 @@ import UserCard from '../components/UserCard';
 import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 const Users = () => {
 
@@ -77,7 +80,7 @@ const Users = () => {
           />
 
 
-            <select
+            {/* <select
               id="category" 
               value={formik.values.category}
               onChange={formik.handleChange}
@@ -87,9 +90,17 @@ const Users = () => {
               <option value='marketing' label="marketing" />
               <option value="technique"  label="technique" />
               <option value="client"  label="client" />
-            </select>
+            </select> */}
+        <FormControl variant="outlined" style={{ width: "200px", margin: "10px" }}>
+            <InputLabel>Catégorie</InputLabel>
+            <Select id="category" name="category" label="category" value={formik.values.category} onChange={formik.handleChange}>
+                <MenuItem id="client" value="client" >Client</MenuItem>
+                <MenuItem id="marketing" value='marketing'>Marketing</MenuItem>
+                <MenuItem id="technique" value="technique" >Technique</MenuItem>
+            </Select>
+        </FormControl>
 
-          <Button type="submit" variant="contained" style={{margin: '10px', height: "100%"}}> Submit </Button>
+          <Button type="submit" variant="contained" style={{margin: '10px', height: "100%"}}> Chercher </Button>
         
       </Grid>
     </form>

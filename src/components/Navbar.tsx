@@ -11,7 +11,7 @@ import {NavLink} from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <AppBar position="static">
+    <AppBar position="static" style = {{marginBottom: "20px"}}>
         <Grid container style = {{padding: "10px"}}> 
             <Grid item xs={6} style = {{display: "flex", alignItems: "center"}} >
                 <NavLink to="/users" style={{textDecoration: 'none', color: "inherit"}}>
@@ -32,12 +32,16 @@ export default function Navbar() {
             </Grid>
 
             <Grid item xs={6} style = {{display: "flex", alignItems: "center", justifyContent: "end"}} >
-                <Button color="inherit">Login</Button>
-                <Tooltip title="Open settings">
-                    <IconButton  sx={{ p: 0 }}>
-                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                    </IconButton>
-                </Tooltip> 
+                <NavLink to="/login" style={{textDecoration: 'none', color: "inherit"}}>
+                    <Button color="inherit">Login</Button>
+                </NavLink>
+                <NavLink to="/profile" style={{textDecoration: 'none', color: "inherit"}}>
+                    <Tooltip title="Settings">
+                        <IconButton  sx={{ p: 0 }}>
+                            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                        </IconButton>
+                    </Tooltip> 
+                </NavLink>
             </Grid>
         
         </Grid>

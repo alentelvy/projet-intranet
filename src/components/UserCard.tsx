@@ -14,7 +14,7 @@ import {getAge, formatDate} from '../services/utils'
 const UserCard = ({user}) => {
   return (
     <Grid item xs={4} style = {{marginBottom: "15px"}}>
-    <Card sx={{ maxWidth: 350, height: '100%' , marginRight: "15px"}} >
+    <Card sx={{ maxWidth: 350, height: '100%'}} >
       <CardActionArea>
         <div style = {{display: "flex", alignItems: "flex-end", justifyContent: "flex-end", padding: "15px"}}> 
           <Chip label= {user.service} variant="outlined"/>

@@ -9,20 +9,6 @@ const register = (email, password) => {
   });
 };
 
-// const login = (username, password) => {
-//   return axios
-//     .post(API_URL + "signin", {
-//       username,
-//       password,
-//     })
-//     .then((response) => {
-//       if (response.data.accessToken) {
-//         localStorage.setItem("user", JSON.stringify(response.data));
-//       }
-
-//       return response.data;
-//     });
-// };
 
 export const login = (email, password) => {
     
@@ -31,8 +17,11 @@ export const login = (email, password) => {
         password,
     })
     .then((response) => {
-        if (response.data.accessToken) {
-            localStorage.setItem("token", response.data.token);
+      console.log(response.data)
+        if (response.data.token) {
+            
+            //localStorage.setItem("token", response.data.token);
+            localStorage.setItem('object', JSON.stringify(response.data));
             //getData(param);
         }
         return response.data;
