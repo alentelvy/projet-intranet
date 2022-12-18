@@ -16,16 +16,16 @@ const EditProfile = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  //fetch user data to edit 
   useEffect(() => {
       getData(`collaborateurs/${id}`)
       .then((data) => {
-        // console.log("edit user", data);
-        setUser(data)
-        
+        setUser(data) 
       });
-
     }, []);
 
+
+    //use default values for form 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: 
@@ -40,13 +40,12 @@ const EditProfile = () => {
               birthdate: user ? user.birthdate : '', 
               password: '',
               phone: user ? user.phone : '',
-              photo: "https://randomuser.me/api/portraits/women/91.jpg",
+              photo: user ? user.photo : '',
               service: user ?  user.service: '', 
               isAdmin: user ?  (user.isAdmin? true: false) : false
               
           },
         onSubmit: values => {
-          // console.log(values)
           putData(`collaborateurs/${id}`, values)
           .then(() => {
             navigate("/users");

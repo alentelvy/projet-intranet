@@ -23,15 +23,6 @@ const SearchBar = ({formik}) => {
             value={formik.values.searchStr} 
           />
 
-          {/* <TextField 
-            style = {{margin: '10px'}}
-            id="name" 
-            label="Nom" 
-            variant="outlined"
-            onChange={formik.handleChange}
-            value={formik.values.name} 
-          /> */}
-
           <TextField 
             style = {{margin: '10px'}}
             id="place" 

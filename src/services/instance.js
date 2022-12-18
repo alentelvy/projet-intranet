@@ -1,5 +1,6 @@
 import axios from "axios";
 
+//Configure axios instance
 const defaultOptions = {
     baseURL: "http://localhost:9000/api/",
     headers: {
@@ -7,13 +8,12 @@ const defaultOptions = {
     },
   };
   
-  // Create instance
-  let instance = axios.create(defaultOptions);
+let instance = axios.create(defaultOptions);
   
   // Set the AUTH token for any request 
   instance.interceptors.request.use((config) => {
-    const sessionObj = JSON.parse(localStorage.getItem('object'))
-    config.headers.Authorization = sessionObj.token ? `Bearer ${sessionObj.token}` : "";
+    const user = JSON.parse(localStorage.getItem('user'))
+    config.headers.Authorization = user.token ? `Bearer ${user.token}` : "";
     return config;
   });
 

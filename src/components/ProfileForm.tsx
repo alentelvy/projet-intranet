@@ -5,13 +5,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
-
+import { useSelector} from 'react-redux'
 
 const ProfileForm = ({formik}) => {
-  const sessionObj = JSON.parse(localStorage.getItem('object'))
+
+  const {  user } = useSelector((state) => state.auth);
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} style={{margin: "15px" }}>
 
         <FormControl variant="outlined" style={{ width: "250px", margin: "5px" }}>
             <InputLabel>Civilité</InputLabel>
@@ -128,7 +129,7 @@ const ProfileForm = ({formik}) => {
         />
         <br />
 
-        {sessionObj.user.isAdmin && 
+        {user.user.isAdmin && 
         <FormControl variant="outlined" style={{ width: "250px", margin: "5px" }}>
             <InputLabel>Mode</InputLabel>
             <Select id="isAdmin" name="isAdmin" label="isAdmin" value={formik.values.isAdmin} onChange={formik.handleChange}>

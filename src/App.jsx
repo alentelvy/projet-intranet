@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Users from './views/Users'
 import Login from './views/Login';
 import Profile from './views/Profile';
@@ -15,7 +15,6 @@ function App() {
 
   <div className="App">
       <header className="App-header">
-        {/* <img className="site-logo" src="./public/food.jpeg" alt="" /> */}
       </header>
       <Routes>
         <Route path="/" element={<Home/>} />

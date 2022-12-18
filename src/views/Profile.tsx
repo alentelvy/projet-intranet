@@ -1,41 +1,42 @@
-import React, { useEffect } from 'react'
+import React  from 'react'
 import Typography from '@mui/material/Typography'
 import Navbar from '../components/Navbar';
 import { useFormik } from 'formik';
 
 import {putData} from '../services/data';
-//import { putData } from '../features/dataActions'
 import ProfileForm from '../components/ProfileForm';
-import { useDispatch, useSelector} from 'react-redux'
-//import { getUserDetails } from '../features/userActions'
+import { useSelector} from 'react-redux'
+
+
 
 const Profile = () => {
 
-  const sessionObj = JSON.parse(localStorage.getItem('object'))
+  //get user data from store 
+  const {  user } = useSelector((state) => state.auth);
 
+  //edit personal data 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-          gender: sessionObj ? sessionObj.user.gender : '',
-          firstname: sessionObj ? sessionObj.user.firstname : '',
-          lastname: sessionObj ? sessionObj.user.lastname : '',
-          city: sessionObj ? sessionObj.user.city : '',
-          country: sessionObj ? sessionObj.user.country : '',
-          email: sessionObj ? sessionObj.user.email : '',
-          birthdate: sessionObj ? sessionObj.user.birthdate : '',
+          gender: user ? user.user.gender : '',
+          firstname: user ? user.user.firstname : '',
+          lastname: user ? user.user.lastname : '',
+          city: user ? user.user.city : '',
+          country: user ? user.user.country : '',
+          email: user ? user.user.email : '',
+          birthdate: user ? user.user.birthdate : '',
           password: '',
-          phone: sessionObj ? sessionObj.user.phone : '',
-          photo: "https://randomuser.me/api/portraits/women/91.jpg",
-          service: sessionObj ? sessionObj.user.service : '',
-          isAdmin: sessionObj ? (sessionObj.user.isAdmin ? true : false): '',
+          phone: user ? user.user.phone : '',
+          photo: user ? user.user.photo : '',
+          service: user ? user.user.service : '',
+          isAdmin: user ? (user.user.isAdmin ? true : false): '',
           
       },
     onSubmit: values => {
-      putData(`collaborateurs/${sessionObj.user.id}`, values)
+      putData(`collaborateurs/${user.user.id}`, values)
      },
   });
 
-  
   return (
     <>
     <Navbar></Navbar>

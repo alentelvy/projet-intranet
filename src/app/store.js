@@ -1,10 +1,9 @@
 import { configureStore, combineReducers, compose } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
-import userSlice from "../features/UserSlice";
-import dataSlice from "../features/DataSlice";
+import authReducer from "../features/auth";
+
 const rootReducer = combineReducers({
-  user: userSlice, 
-  data: dataSlice
+  auth: authReducer,
 });
 
 const store = configureStore(

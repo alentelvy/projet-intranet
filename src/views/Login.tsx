@@ -1,44 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import {login} from '../services/auth';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
+import { useDispatch} from 'react-redux'
+import { login } from "../features/auth";
+import Button from '@mui/material/Button';
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate = useNavigate();
 
-    
+let navigate = useNavigate();
+const [loading, setLoading] = useState(false);
+const dispatch = useDispatch();
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+
+  //get email
     const onChangeEmail = (e) => {
-        const email = e.target.value;
-        setEmail(email);
-      };
-    
-      const onChangePassword = (e) => {
-        const password = e.target.value;
-        setPassword(password);
-      };
+    const email = e.target.value;
+    setEmail(email);
+    };
+  
+  //get password
+    const onChangePassword = (e) => {
+      const password = e.target.value;
+      setPassword(password);
+    };
 
+    //login and redirect to home page
+    const onSubmit = (e) => {
+    e.preventDefault()
+    setLoading(true);
 
-      const onSubmit = (e) => {
-        e.preventDefault()
-        login(email, password)
-        .then(() => {
-          navigate("/");
-        })
-        .catch((e) => {
-          return (<div> error </div>)
-        })
-    }
-    
+    dispatch(login({ email, password }))
+    .unwrap()
+    .then(() => {
+      navigate("/");
+      window.location.reload();
+    })
+    .catch(() => {
+      setLoading(false);
+    });
+  };
+
+  
 
     return(
       <div className="login-wrapper">
-        <h1>Please Log In</h1>
+        <h1>Log In</h1>
         <form onSubmit={onSubmit}>
           <label>
-            <p>email</p>
+            <p>Email</p>
             <input 
                 name="email"
                 value={email}
@@ -46,7 +55,7 @@ export default function Login() {
             />
           </label>
           <label>
-            <p>Password</p>
+            <p>Mot de passe</p>
             <input 
                 type="password" 
                 name="password"
@@ -55,7 +64,7 @@ export default function Login() {
             />
           </label>
           <div>
-            <button type="submit">Submit</button>
+            <Button type="submit" variant="contained" style={{margin: '10px', height: "100%"}}> Submit </Button>
           </div>
         </form>
       </div>

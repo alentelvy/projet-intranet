@@ -7,7 +7,8 @@ import ProfileForm from '../components/ProfileForm';
 
 
 const CreateProfile = () => {
-  
+    
+    //create new profile in admin mode
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -25,7 +26,6 @@ const CreateProfile = () => {
             isAdmin: false
         },
         onSubmit: values => {
-        // console.log(values)
         postData('collaborateurs', values)
         },
     }); 
@@ -36,7 +36,7 @@ const CreateProfile = () => {
       <>
       <Navbar></Navbar>
       <Typography variant="h5">Créer le profil de l''utilisateur</Typography>
-      <ProfileForm formik = {formik} isAdmin = {true}></ProfileForm>
+      <ProfileForm formik = {formik}></ProfileForm>
       </>
       )
 }

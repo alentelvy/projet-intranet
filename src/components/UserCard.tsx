@@ -12,50 +12,49 @@ import Grid from '@mui/material/Grid';
 import {getAge, formatDate} from '../services/utils'
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { useSelector} from 'react-redux'
 
+const UserCard = ({cardUser, deleteUser}) => {
 
-const UserCard = ({user, deleteUser}) => {
-
-  const sessionObj = JSON.parse(localStorage.getItem('object'))
-
+  const {  user } = useSelector((state) => state.auth);
 
   return (
     <Grid item xs={4} style = {{marginBottom: "15px"}}>
     <Card sx={{ maxWidth: 350, height: '100%'}} >
-      <CardActionArea>
         <div style = {{display: "flex", alignItems: "flex-end", justifyContent: "flex-end", padding: "15px"}}> 
-          <Chip label= {user.service} variant="outlined"/>
+          <Chip label= {cardUser.service} variant="outlined"/>
         </div>
+      <CardActionArea style = {{marginBottom: "15px"}}>
         <CardMedia
           component="img"
           height="100%"
-          image={user.photo}
+          image={cardUser.photo}
           alt="photo"
         />
         <CardContent style = {{textAlign: "left"}}>
           <Typography gutterBottom variant="h5" component="div">
-            {`${user.firstname} ${user.lastname} ${getAge(user.birthdate)}`}
+            {`${cardUser.firstname} ${cardUser.lastname} ${getAge(cardUser.birthdate)}`}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`${user.city} ${user.country}`}
+            {`${cardUser.city} ${cardUser.country}`}
           </Typography>
         <div style = {{alignItems: "center"}}> 
-          <div><MailIcon /> {user.email}</div>
-          <div><LocalPhoneIcon /> {user.phone}</div>
-          <div><CakeIcon /> Anniversaire {formatDate(user.birthdate)}</div>
+          <div><MailIcon /> {cardUser.email}</div>
+          <div><LocalPhoneIcon /> {cardUser.phone}</div>
+          <div><CakeIcon /> Anniversaire {formatDate(cardUser.birthdate)}</div>
         </div>
         </CardContent>
 
         {
-                sessionObj.user.isAdmin && 
-                <Link to={`/admin/edit/${user.id}`} style={{textDecoration: 'none', color: "inherit"}}>
-                    <Button color="inherit" >Éditer</Button>
+                user.user.isAdmin && 
+                <Link to={`/admin/edit/${cardUser.id}`} style={{textDecoration: 'none', color: "inherit"}}>
+                    <Button variant="contained" style = {{margin: "10px"}}> Éditer</Button>
                 </Link>
                 
         }
         {
-                sessionObj.user.isAdmin && 
-                    <Button color="inherit" onClick = {() => deleteUser(user.id)}>Supprimer</Button>
+                user.user.isAdmin && 
+                    <Button variant="outlined" style = {{margin: "10px"}} onClick = {() => deleteUser(cardUser.id)}>Supprimer</Button>
         }
       </CardActionArea>
     </Card>

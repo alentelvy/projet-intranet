@@ -2,26 +2,23 @@ import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid';
 import Navbar from '../components/Navbar';
 import UserCard from '../components/UserCard';
-import { useFormik, useFormikContext } from 'formik';
+import { useFormik } from 'formik';
 import SearchBar from '../components/SearchBar';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector} from 'react-redux'
-// import { getData } from '../features/dataActions'
 import {getData} from '../services/data';
 import {deleteData} from '../services/data';
 import {filterAll, filterByPlace, filterByService} from '../services/utils'
+import { Typography } from '@mui/material';
 
 
 const Users = () => {
 
-  const sessionObj = JSON.parse(localStorage.getItem('object')) || false
-  console.log("sessionObj", sessionObj)
+
   const [users, setUsers] = useState([]);
   const [display, setDisplay] = useState([])
   const [del, setDel] = useState(false)
 
 
-
+  //fetch all users, refresh if user is deleted by admin
   useEffect(() => {
     getData("collaborateurs")
     .then((data) => {
@@ -32,7 +29,7 @@ const Users = () => {
   }, [del]);
 
     
-  
+  //default values for searchBar
   const formik = useFormik({
         initialValues: {
           searchStr: '',
@@ -42,9 +39,6 @@ const Users = () => {
           
       },
         onSubmit: values => {
-           console.log("formik", values)
-
-
             //Create an array of used filters
             const filters = []
             values.searchStr && filters.push({"func": filterAll, "val": values.searchStr})
@@ -52,7 +46,7 @@ const Users = () => {
             values.place && filters.push({"func": filterByPlace, "val": values.place})
 
 
-            //Apply each filter function to previously filtered result
+            //Apply each filter function to previously filtered result iteratively
             let copy = [...users]
             let result
             filters.forEach(filter => {
@@ -67,7 +61,8 @@ const Users = () => {
                 return result 
               }
             })
-
+          
+          //show filtered result 
           setDisplay(result)
 
          },
@@ -80,7 +75,7 @@ const Users = () => {
       setDel(!del)
     }
     
-  if (users.length === 0) return (<div> Loading</div>);
+  if (users.length == 0) return (<div> Loading</div>);
   if (display.length > 0) return (
   <>
     <Navbar></Navbar>
@@ -90,13 +85,20 @@ const Users = () => {
       {
         display.map(user => 
 
-              <UserCard user = {user} key = {user.id} deleteUser = {deleteUser}/>
+              <UserCard cardUser = {user} key = {user.id} deleteUser = {deleteUser}/>
         )
       }
       </Grid>
 
     </>
   )
+  if (display.length == 0) return (
+    <>
+      <Navbar></Navbar>
+      <SearchBar formik = {formik}></SearchBar>
+      <Typography> No result</Typography>
+      </>
+    )
 }
 
 export default Users

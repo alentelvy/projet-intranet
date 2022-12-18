@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
-import { getRandomInt } from '../services/utils'
-import {getData} from '../services/data'
+import {deleteData, getData} from '../services/data'
 import UserCard from '../components/UserCard'
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+
 
 const Home = () => {
 
 const [user, setUser] = useState([]);
 const [random, setRandom] = useState(false);
+const [del, setDel] = useState(false)
 
+//fetch data on refresh and if user was deleted by admin
 useEffect(() => {
     getData("collaborateurs/random")
     .then((data) => {
         console.log(data);
         setUser(data)
     });
+    }, [random, del]);
 
-    }, [random]);
+  //Delete user in admin mode
+  const deleteUser = (id) => {
+    deleteData(`collaborateurs/${id}`)
+    setDel(!del)
+  }
     
   return (
     <>
@@ -30,7 +37,7 @@ useEffect(() => {
     </div>
 
     <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
-        <UserCard user = {user}/>
+        <UserCard cardUser = {user} deleteUser ={deleteUser}/>
     </div>
     <Button variant="outlined" style = {{margin: "20px"}} onClick={() => setRandom(!random)}> Dire bonjour à quelqu'un d'autre</Button>
     </>
