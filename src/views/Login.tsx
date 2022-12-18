@@ -1,9 +1,5 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import {login} from '../services/auth';
-import {getData} from '../services/data';
-import instance from '../services/axios';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -25,11 +21,15 @@ export default function Login() {
       };
 
 
-    console.log(typeof login)
       const onSubmit = (e) => {
         e.preventDefault()
-        login(email, password) 
-        navigate("/users");
+        login(email, password)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((e) => {
+          return (<div> error </div>)
+        })
     }
     
 

@@ -1,117 +1,97 @@
 import React, { useEffect, useState } from 'react'
-import instance from '../services/axios';
-import axios from "axios";
-import {getData} from '../services/data';
-
 import Grid from '@mui/material/Grid';
 import Navbar from '../components/Navbar';
 import UserCard from '../components/UserCard';
-import { useFormik } from 'formik';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import { useFormik, useFormikContext } from 'formik';
+import SearchBar from '../components/SearchBar';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector} from 'react-redux'
+// import { getData } from '../features/dataActions'
+import {getData} from '../services/data';
+import {deleteData} from '../services/data';
+import {filterAll, filterByPlace, filterByService} from '../services/utils'
+
 
 const Users = () => {
 
+  const sessionObj = JSON.parse(localStorage.getItem('object')) || false
+  console.log("sessionObj", sessionObj)
   const [users, setUsers] = useState([]);
+  const [display, setDisplay] = useState([])
+  const [del, setDel] = useState(false)
 
-    useEffect(() => {
-        getData("collaborateurs")
-        .then((data) => {
-          console.log(data);
-          setUsers(data)
-        });
-  
-      }, []);
-  
 
-      const formik = useFormik({
+
+  useEffect(() => {
+    getData("collaborateurs")
+    .then((data) => {
+      setUsers(data)
+      setDisplay(data)
+    });
+
+  }, [del]);
+
+    
+  
+  const formik = useFormik({
         initialValues: {
           searchStr: '',
           name: '', 
           place: '',
-          category: '',
+          service: '',
           
       },
         onSubmit: values => {
-           console.log(values)
+           console.log("formik", values)
+
+
+            //Create an array of used filters
+            const filters = []
+            values.searchStr && filters.push({"func": filterAll, "val": values.searchStr})
+            values.service &&  filters.push({"func": filterByService, "val": values.service})
+            values.place && filters.push({"func": filterByPlace, "val": values.place})
+
+
+            //Apply each filter function to previously filtered result
+            let copy = [...users]
+            let result
+            filters.forEach(filter => {
+              let filterFunc = filter["func"]
+              let filterParam = filter["val"]
+              result = filterFunc(copy, filterParam)
+              if( result.length > 0) {
+                copy = result
+                console.log("IF", copy, result )
+              } else {
+                console.log("Else", copy, result )
+                return result 
+              }
+            })
+
+          setDisplay(result)
+
          },
     
       });
+
+    //Delete user in admin mode
+    const deleteUser = (id) => {
+      deleteData(`collaborateurs/${id}`)
+      setDel(!del)
+    }
     
-  return (
+  if (users.length === 0) return (<div> Loading</div>);
+  if (display.length > 0) return (
   <>
     <Navbar></Navbar>
-
-
-
-    <form onSubmit={formik.handleSubmit}>
-      <Grid container style = {{display: "flex", justifyContent: "center", textAlign: "center", alignItems: "center", margin: '25px'}}> 
-        
-
-          <TextField 
-            style = {{margin: '10px'}}
-            id="searchStr" 
-            label="Rechercher" 
-            variant="outlined"
-            onChange={formik.handleChange}
-            value={formik.values.searchStr} 
-          />
-
-          <TextField 
-            style = {{margin: '10px'}}
-            id="name" 
-            label="Nom" 
-            variant="outlined"
-            onChange={formik.handleChange}
-            value={formik.values.name} 
-          />
-
-          <TextField 
-            style = {{margin: '10px'}}
-            id="place" 
-            label="Localisation" 
-            variant="outlined"
-            onChange={formik.handleChange}
-            value={formik.values.place} 
-          />
-
-
-            {/* <select
-              id="category" 
-              value={formik.values.category}
-              onChange={formik.handleChange}
-              style={{margin: '10px', color: "grey"}}
-            >
-              <option value="" label="Catégorie" />
-              <option value='marketing' label="marketing" />
-              <option value="technique"  label="technique" />
-              <option value="client"  label="client" />
-            </select> */}
-        <FormControl variant="outlined" style={{ width: "200px", margin: "10px" }}>
-            <InputLabel>Catégorie</InputLabel>
-            <Select id="category" name="category" label="category" value={formik.values.category} onChange={formik.handleChange}>
-                <MenuItem id="client" value="client" >Client</MenuItem>
-                <MenuItem id="marketing" value='marketing'>Marketing</MenuItem>
-                <MenuItem id="technique" value="technique" >Technique</MenuItem>
-            </Select>
-        </FormControl>
-
-          <Button type="submit" variant="contained" style={{margin: '10px', height: "100%"}}> Chercher </Button>
-        
-      </Grid>
-    </form>
+    <SearchBar formik = {formik}></SearchBar>
 
       <Grid container style = {{display: "flex", justifyContent: "center", textAlign: "center", alignItems: "center"}}>
       {
-        users.map(user => 
-          
-          <UserCard user = {user} key = {user.id}/>
-      
-          )
+        display.map(user => 
+
+              <UserCard user = {user} key = {user.id} deleteUser = {deleteUser}/>
+        )
       }
       </Grid>
 

@@ -10,8 +10,15 @@ import CakeIcon from '@mui/icons-material/Cake';
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import {getAge, formatDate} from '../services/utils'
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
-const UserCard = ({user}) => {
+
+const UserCard = ({user, deleteUser}) => {
+
+  const sessionObj = JSON.parse(localStorage.getItem('object'))
+
+
   return (
     <Grid item xs={4} style = {{marginBottom: "15px"}}>
     <Card sx={{ maxWidth: 350, height: '100%'}} >
@@ -23,7 +30,7 @@ const UserCard = ({user}) => {
           component="img"
           height="100%"
           image={user.photo}
-          alt="green iguana"
+          alt="photo"
         />
         <CardContent style = {{textAlign: "left"}}>
           <Typography gutterBottom variant="h5" component="div">
@@ -38,6 +45,18 @@ const UserCard = ({user}) => {
           <div><CakeIcon /> Anniversaire {formatDate(user.birthdate)}</div>
         </div>
         </CardContent>
+
+        {
+                sessionObj.user.isAdmin && 
+                <Link to={`/admin/edit/${user.id}`} style={{textDecoration: 'none', color: "inherit"}}>
+                    <Button color="inherit" >Éditer</Button>
+                </Link>
+                
+        }
+        {
+                sessionObj.user.isAdmin && 
+                    <Button color="inherit" onClick = {() => deleteUser(user.id)}>Supprimer</Button>
+        }
       </CardActionArea>
     </Card>
   </Grid>

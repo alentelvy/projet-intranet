@@ -14,7 +14,25 @@ export const formatDate = (birthdate) => {
     return birthDate.toLocaleDateString('fr', { day: "numeric", month:"long"})
 }
 
-export const getRandomInt = (max) => {
-    return Math.floor(Math.random() * max);
-}
-  
+
+export const filterAll = (data, val) => {
+    const result = data.filter(item => {
+      return JSON.stringify(item).toLowerCase().includes(val.toLowerCase())
+    })
+    //console.log(result)
+    return result
+  }
+
+ export  const filterByService = (data, val) => {
+    const result = data.filter(item => {
+      return item.service.toLowerCase().includes(val.toLowerCase()) 
+    })
+    return result
+  }
+
+  export  const filterByPlace = (data, val) => {
+    const result = data.filter((item) => {           
+      return item.city.toLowerCase().includes(val.toLowerCase()) || item.country.toLowerCase().includes(val.toLowerCase())
+    })
+    return result
+  }
